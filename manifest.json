@@ -5,13 +5,12 @@
   },
   "shortName": "weebubble",
   "studio": {
-    "domain": "studio.example.com",
-    "name": "Your Studio Name",
-    "stagingDomain": "staging.example.com"
+    "domain": "www.xweb.hu",
+    "name": "Peter Forgacs",
+    "stagingDomain": "www.xweb.hu"
   },
   "supportedOrientations": [
-    "portrait",
-    "landscape"
+    "portrait"
   ],
-  "title": "weebubble"
+  "title": "WeeBubble"
 }
