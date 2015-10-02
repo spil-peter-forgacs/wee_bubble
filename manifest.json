@@ -1,0 +1,17 @@
+{
+  "appID": "9ee5a2c8af72445489aa26c0d96b286c",
+  "dependencies": {
+    "devkit-core": "https://github.com/gameclosure/devkit-core#v3.0.2"
+  },
+  "shortName": "weebubble",
+  "studio": {
+    "domain": "studio.example.com",
+    "name": "Your Studio Name",
+    "stagingDomain": "staging.example.com"
+  },
+  "supportedOrientations": [
+    "portrait",
+    "landscape"
+  ],
+  "title": "weebubble"
+}
