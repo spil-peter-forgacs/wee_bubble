@@ -10,6 +10,7 @@ import ui.StackView as StackView;
 
 // User imports
 import src.TitleScreen as TitleScreen;
+import src.GameScreen1 as GameScreen1;
 import src.soundcontroller as soundcontroller;
 
 exports = Class(GC.Application, function () {
@@ -17,6 +18,7 @@ exports = Class(GC.Application, function () {
     this.initUI = function () {
 
         var titlescreen = new TitleScreen();
+        var gamescreen1 = new GameScreen1();
 
         this.view.style.backgroundColor = '#000000';
 
@@ -34,13 +36,18 @@ exports = Class(GC.Application, function () {
         rootView.push(titlescreen);
 
         var sound = soundcontroller.getSound();
-        sound.play('Pamgaea');
+        //sound.play('Pamgaea');
 
         /**
          * Listen for an event dispatched by the title screen.
          */
         titlescreen.on('titlescreen:start', function () {
-            console.warn('Titlescreen start button was pressed');
+            rootView.push(gamescreen1);
+            gamescreen1.emit('game1:start');
+        });
+
+        gamescreen1.on('gamescreen1:end', function () {
+            rootView.pop();
         });
 
     };
