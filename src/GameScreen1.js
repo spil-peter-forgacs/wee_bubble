@@ -4,6 +4,7 @@
 
 // SDK imports
 import ui.View;
+import ui.ImageView as ImageView;
 
 // User imports
 import src.GameElements.Enemy as Enemy;
@@ -30,6 +31,16 @@ exports = Class(ui.View, function (supr) {
     this.build = function () {
 
         this._input = false;
+
+        // Background
+        this._bg = new ImageView({
+            superview: this,
+            image: 'resources/images/bg2.jpg',
+            width: this._config.screenWidth,
+            height: this._config.screenHeight,
+            x: 0,
+            y: 0
+        });
 
         this._user = new User();
         this._enemy = new Enemy();

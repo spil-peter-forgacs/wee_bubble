@@ -32,24 +32,6 @@ exports = Class(ui.View, function (supr) {
             this._balls[i] = 'resources/images/balls/ball' + i + '.png';
         }
 
-        // Create the hexagrid.
-        this._hexagrid = [];
-        for (i = 0; i < this._config.hexaGridHeight; i++) {
-            this._hexagrid[i] = [];
-            for (j = 0; j < this._config.hexaGridWidth; j++) {
-                this._hexagrid[i][j] = new ImageView({
-                    superview: this,
-                    image: this._config.ballEmpty,
-                    //this._config.hexaGridFilled
-                    //this._balls[ Math.floor( Math.random() * this._config.ballLength) ]
-                    width: this._config.ballSize,
-                    height: this._config.ballSize,
-                    x: (j * this._config.ballSize) + (i % 2) * (this._config.ballSize / 2),
-                    y: (i * this._config.ballSize)
-                });
-            }
-        }
-
         this.on('hexagrid:start', start_game_flow.bind(this));
 
         this.on('hexagrid:tick', tick.bind(this));
@@ -60,14 +42,30 @@ exports = Class(ui.View, function (supr) {
  * Game play.
  */
 function start_game_flow () {
-    //hexaGridView();
-}
+    // Create the hexagrid.
+    this._hexagrid = [];
+    for (i = 0; i < this._config.hexaGridHeight; i++) {
+        this._hexagrid[i] = [];
+        for (j = 0; j < this._config.hexaGridWidth; j++) {
 
-/**
- * HexaGrid view.
- */
-//function hexaGridView() {
-//}
+            var ballImage = (
+                i < this._config.hexaGridFilled ?
+                this._balls[ Math.floor( Math.random() * this._config.ballLength) ] :
+                this._config.ballEmpty
+            );
+
+            this._hexagrid[i][j] = new ImageView({
+                superview: this,
+                image: ballImage,
+                width: this._config.ballSize,
+                height: this._config.ballSize,
+                x: (j * this._config.ballSize) + (i % 2) * (this._config.ballSize / 2),
+                y: (i * this._config.ballSize)
+            });
+        }
+    }
+
+}
 
 /**
  * Game tick.

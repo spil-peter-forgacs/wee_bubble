@@ -24,15 +24,6 @@ exports = Class(ui.View, function (supr) {
 
     this.build = function () {
 
-        this._enemyview = new ImageView({
-            superview: this,
-            image: 'resources/images/enemy.png',
-            width: this._config.enemySize,
-            height: this._config.enemySize,
-            x: 0,
-            y: 0
-        });
-
         this.on('enemy:start', start_game_flow.bind(this));
 
         this.on('enemy:tick', tick.bind(this));
@@ -47,6 +38,16 @@ exports = Class(ui.View, function (supr) {
  * Game play.
  */
 function start_game_flow () {
+
+    this._enemyview = new ImageView({
+        superview: this,
+        image: 'resources/images/enemy.png',
+        width: this._config.enemySize,
+        height: this._config.enemySize,
+        x: 0,
+        y: 0
+    });
+
 }
 
 /**
