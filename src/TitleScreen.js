@@ -10,11 +10,13 @@ import ui.widget.ButtonView as ButtonView;
 
 exports = Class(ui.ImageView, function (supr) {
     this.init = function (opts) {
+        this._config = JSON.parse(CACHE['resources/conf/config.json']);
+
         opts = merge(opts, {
             x: 0,
             y: 0,
-            width: 320,
-            height: 480,
+            width: this._config.screenWidth,
+            height: this._config.screenHeight,
             image: "resources/images/bg1.jpg"
         });
 
@@ -27,14 +29,14 @@ exports = Class(ui.ImageView, function (supr) {
 
         var buttonWidth = 294;
         var buttonHeight = 61;
-        var deviceWidth = 320;
-        var deviceHeight = 480;
+        var deviceWidth = this._config.screenWidth;
+        var deviceHeight = this._config.screenHeight;
 
         var textview = new TextView({
             superview: this,
             x: 0,
             y: 15,
-            width: 320,
+            width: this._config.screenWidth,
             height: 50,
             text: "WeeBubble",
             autoSize: false,

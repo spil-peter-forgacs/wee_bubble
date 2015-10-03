@@ -1,0 +1,12 @@
+{
+    "screenWidth": 320,
+    "screenHeight": 480,
+    "ballSize": 30,
+    "enemySize": 60,
+    "cannonSize": 60,
+    "ballLength": 16,
+    "ballEmpty": "resources/images/balls/empty.png",
+    "hexaGridWidth": 10,
+    "hexaGridHeight": 12,
+    "hexaGridFilled": 4
+}

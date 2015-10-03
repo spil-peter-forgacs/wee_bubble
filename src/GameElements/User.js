@@ -5,22 +5,17 @@
 import ui.View;
 import ui.ImageView as ImageView;
 
-/**
- * Game constants.
- */
-var ballLength = 16;
-var ballEmpty = 'resources/images/balls/empty.png';
-
 exports = Class(ui.View, function (supr) {
-    var width = 320;
-    var height = 480;
 
     this.init = function (opts) {
+
+        this._config = JSON.parse(CACHE['resources/conf/config.json']);
+
         opts = merge(opts, {
             x: 0,
             y: 0,
-            width: width,
-            height: height,
+            width: this._config.screenWidth,
+            height: this._config.screenHeight,
         });
 
         supr(this, 'init', [opts]);
@@ -32,7 +27,7 @@ exports = Class(ui.View, function (supr) {
 
         // Load the balls.
         this._balls = [];
-        for (var i = 0; i < ballLength; i++) {
+        for (var i = 0; i < this._config.ballLength; i++) {
             this._balls[i] = 'resources/images/balls/ball' + i + '.png';
         }
 
@@ -40,8 +35,8 @@ exports = Class(ui.View, function (supr) {
         var bg = new ImageView({
             superview: this,
             image: 'resources/images/bg2.jpg',
-            width: width,
-            height: height,
+            width: this._config.screenWidth,
+            height: this._config.screenHeight,
             x: 0,
             y: 0
         });
@@ -49,41 +44,41 @@ exports = Class(ui.View, function (supr) {
         // Fired ball
         this._ball0 = new ImageView({
             superview: this,
-            image: ballEmpty,
-            width: 30,
-            height: 30,
-            x: (width - 30) / 2,
-            y: height - 45
+            image: this._config.ballEmpty,
+            width: this._config.ballSize,
+            height: this._config.ballSize,
+            x: (this._config.screenWidth - this._config.ballSize) / 2,
+            y: this._config.screenHeight - (this._config.ballSize * 1.5)
         });
 
         // Cannon
         this._cannonview = new ImageView({
             superview: this,
             image: 'resources/images/cannon.png',
-            width: 60,
-            height: 60,
-            x: (width - 60) / 2,
-            y: height - 60
+            width: this._config.cannonSize,
+            height: this._config.cannonSize,
+            x: (this._config.screenWidth - this._config.cannonSize) / 2,
+            y: this._config.screenHeight - this._config.cannonSize
         });
 
         // Cannon ball
         this._ball1 = new ImageView({
             superview: this,
-            image: ballEmpty,
-            width: 30,
-            height: 30,
-            x: (width - 30) / 2,
-            y: height - 45
+            image: this._config.ballEmpty,
+            width: this._config.ballSize,
+            height: this._config.ballSize,
+            x: (this._config.screenWidth - this._config.ballSize) / 2,
+            y: this._config.screenHeight - (this._config.ballSize * 1.5)
         });
 
         // Next ball
         this._ball2 = new ImageView({
             superview: this,
-            image: ballEmpty,
-            width: 30,
-            height: 30,
-            x: (width - 120) / 2,
-            y: height - 30
+            image: this._config.ballEmpty,
+            width: this._config.ballSize,
+            height: this._config.ballSize,
+            x: (this._config.screenWidth / 2) - this._config.cannonSize,
+            y: this._config.screenHeight - this._config.ballSize
         });
 
         this.on('user:start', start_game_flow.bind(this));

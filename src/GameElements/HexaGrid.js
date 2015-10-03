@@ -5,22 +5,16 @@
 import ui.View;
 import ui.ImageView as ImageView;
 
-/**
- * Game constants.
- */
-var hexaGridWidth = 10;
-var hexaGridHeight = 12;
-var hexaGridFilled = 4;
-var ballLength = 16;
-var ballEmpty = 'resources/images/balls/empty.png';
-
 exports = Class(ui.View, function (supr) {
     this.init = function (opts) {
+
+        this._config = JSON.parse(CACHE['resources/conf/config.json']);
+
         opts = merge(opts, {
             x: 0,
-            y: 60,
-            width: 320,
-            height: 420,
+            y: this._config.enemySize,
+            width: this._config.screenWidth,
+            height: this._config.screenHeight - this._config.enemySize,
         });
 
         supr(this, 'init', [opts]);
@@ -34,23 +28,24 @@ exports = Class(ui.View, function (supr) {
 
         // Load the balls.
         this._balls = [];
-        for (i = 0; i < ballLength; i++) {
+        for (i = 0; i < this._config.ballLength; i++) {
             this._balls[i] = 'resources/images/balls/ball' + i + '.png';
         }
 
         // Create the hexagrid.
         this._hexagrid = [];
-        for (i = 0; i < hexaGridHeight; i++) {
+        for (i = 0; i < this._config.hexaGridHeight; i++) {
             this._hexagrid[i] = [];
-            for (j = 0; j < hexaGridWidth; j++) {
+            for (j = 0; j < this._config.hexaGridWidth; j++) {
                 this._hexagrid[i][j] = new ImageView({
                     superview: this,
-                    image: ballEmpty,
-                    //this._balls[ Math.floor( Math.random() * ballLength) ]
-                    width: 30,
-                    height: 30,
-                    x: (j * 30) + (i % 2) * 15,
-                    y: (i * 30)
+                    image: this._config.ballEmpty,
+                    //this._config.hexaGridFilled
+                    //this._balls[ Math.floor( Math.random() * this._config.ballLength) ]
+                    width: this._config.ballSize,
+                    height: this._config.ballSize,
+                    x: (j * this._config.ballSize) + (i % 2) * (this._config.ballSize / 2),
+                    y: (i * this._config.ballSize)
                 });
             }
         }

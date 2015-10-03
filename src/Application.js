@@ -17,20 +17,22 @@ exports = Class(GC.Application, function () {
 
     this.initUI = function () {
 
+        this._config = JSON.parse(CACHE['resources/conf/config.json']);
+
         var titlescreen = new TitleScreen();
         var gamescreen1 = new GameScreen1();
 
         this.view.style.backgroundColor = '#000000';
 
-        // Create a stackview of size 320x480, then scale it to fit horizontally.
+        // Create a stackview, then scale it to fit horizontally.
         var rootView = new StackView({
             superview: this,
             x: 0,
             y: 0,
-            width: 320,
-            height: 480,
+            width: this._config.screenWidth,
+            height: this._config.screenHeight,
             clip: true,
-            scale: device.width / 320
+            scale: device.width / this._config.screenWidth
         });
 
         rootView.push(titlescreen);

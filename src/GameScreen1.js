@@ -12,11 +12,14 @@ import src.GameElements.HexaGrid as HexaGrid;
 
 exports = Class(ui.View, function (supr) {
     this.init = function (opts) {
+
+        this._config = JSON.parse(CACHE['resources/conf/config.json']);
+
         opts = merge(opts, {
             x: 0,
             y: 0,
-            width: 320,
-            height: 480,
+            width: this._config.screenWidth,
+            height: this._config.screenHeight,
         });
 
         supr(this, 'init', [opts]);
