@@ -29,9 +29,10 @@ exports = Class(ui.View, function (supr) {
         this.on('enemy:tick', tick.bind(this));
     };
 
-    this.getPos = function () {
-        //@TODO
-    }
+    this.config = function (config) {
+        this._config = config;
+    };
+
 });
 
 /**

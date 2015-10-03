@@ -56,6 +56,23 @@ exports = Class(ui.View, function (supr) {
         }
 
     };
+
+    this.config = function (config) {
+        this._config = config;
+    };
+
+
+    /**
+     * Get a random ball.
+     *
+     * @return string ball
+     */
+    this.getBall = function () {
+        var ball = this._balls[ Math.floor( Math.random() * this._config.ballLength) ];
+
+        return ball;
+    }
+
 });
 
 /**
@@ -88,7 +105,7 @@ function start_game_flow () {
     // Cannon ball
     this._ball1 = new ImageView({
         superview: this,
-        image: this._config.ballEmpty,
+        image: this.getBall(),
         width: this._config.ballSize,
         height: this._config.ballSize,
         x: (this._config.screenWidth - this._config.ballSize) / 2,
@@ -98,7 +115,7 @@ function start_game_flow () {
     // Next ball
     this._ball2 = new ImageView({
         superview: this,
-        image: this._config.ballEmpty,
+        image: this.getBall(),
         width: this._config.ballSize,
         height: this._config.ballSize,
         x: (this._config.screenWidth / 2) - this._config.cannonSize,

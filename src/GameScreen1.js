@@ -75,8 +75,11 @@ exports = Class(ui.View, function (supr) {
  */
 function start_game_flow () {
     // Game setup
-    // Like:
-    //this._enemy.style.r = 1;
+    this._config.ballLength = 3;
+
+    this._user.config(this._config);
+    this._enemy.config(this._config);
+    this._hexagrid.config(this._config);
 
     // Sub setup
     this._user.emit('user:start');

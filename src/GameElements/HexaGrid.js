@@ -36,6 +36,11 @@ exports = Class(ui.View, function (supr) {
 
         this.on('hexagrid:tick', tick.bind(this));
     };
+
+    this.config = function (config) {
+        this._config = config;
+    };
+
 });
 
 /**
