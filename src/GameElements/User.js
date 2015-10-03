@@ -82,6 +82,8 @@ exports = Class(ui.View, function (supr) {
         });
 
         this.on('user:start', start_game_flow.bind(this));
+
+        this.on('user:tick', tick.bind(this));
     };
 });
 
@@ -89,4 +91,10 @@ exports = Class(ui.View, function (supr) {
  * Game play.
  */
 function start_game_flow () {
+}
+
+/**
+ * Game tick.
+ */
+function tick () {
 }

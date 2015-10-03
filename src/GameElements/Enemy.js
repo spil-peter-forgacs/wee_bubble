@@ -34,6 +34,8 @@ exports = Class(ui.View, function (supr) {
         });
 
         this.on('enemy:start', start_game_flow.bind(this));
+
+        this.on('enemy:tick', tick.bind(this));
     };
 
     this.getPos = function () {
@@ -45,4 +47,10 @@ exports = Class(ui.View, function (supr) {
  * Game play.
  */
 function start_game_flow () {
+}
+
+/**
+ * Game tick.
+ */
+function tick () {
 }

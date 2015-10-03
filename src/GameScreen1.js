@@ -45,6 +45,15 @@ exports = Class(ui.View, function (supr) {
  * Game play.
  */
 function start_game_flow () {
+    // Game setup
+    // Like:
+    //this._enemy.style.r = 1;
+
+    // Sub setup
+    this._user.emit('user:start');
+    this._enemy.emit('enemy:start');
+    this._hexagrid.emit('hexagrid:start');
+
     var i = setInterval(tick.bind(this), 100);
 }
 
@@ -52,4 +61,7 @@ function start_game_flow () {
  * Game tick.
  */
 function tick () {
+    this._user.emit('user:tick');
+    this._enemy.emit('enemy:tick');
+    this._hexagrid.emit('hexagrid:tick');
 }

@@ -51,6 +51,8 @@ exports = Class(ui.View, function (supr) {
         }
 
         this.on('hexagrid:start', start_game_flow.bind(this));
+
+        this.on('hexagrid:tick', tick.bind(this));
     };
 });
 
@@ -58,11 +60,17 @@ exports = Class(ui.View, function (supr) {
  * Game play.
  */
 function start_game_flow () {
-    hexaGridView();
+    //hexaGridView();
 }
 
 /**
  * HexaGrid view.
  */
-function hexaGridView() {
+//function hexaGridView() {
+//}
+
+/**
+ * Game tick.
+ */
+function tick () {
 }
