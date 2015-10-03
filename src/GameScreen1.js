@@ -86,14 +86,25 @@ function start_game_flow () {
     this._enemy.emit('enemy:start');
     this._hexagrid.emit('hexagrid:start');
 
-    var i = setInterval(tick.bind(this), 100);
+    this._startTime = Date.now();
+    window.requestAnimationFrame(tick.bind(this));
 }
 
 /**
  * Game tick.
  */
 function tick () {
+    var timestamp = Date.now();
+    var progress = timestamp - this._startTime;
+
+    this._user.progress(progress);
+    this._enemy.progress(progress);
+    this._hexagrid.progress(progress);
+
     this._user.emit('user:tick');
     this._enemy.emit('enemy:tick');
     this._hexagrid.emit('hexagrid:tick');
+
+    this._startTime = timestamp;
+    window.requestAnimationFrame(tick.bind(this));
 }

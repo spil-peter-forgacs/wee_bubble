@@ -10,6 +10,7 @@ exports = Class(ui.View, function (supr) {
     this.init = function (opts) {
 
         this._config = JSON.parse(CACHE['resources/conf/config.json']);
+        this._progress = 0;
 
         opts = merge(opts, {
             x: 0,
@@ -31,6 +32,10 @@ exports = Class(ui.View, function (supr) {
             this._balls[i] = 'resources/images/balls/ball' + i + '.png';
         }
 
+        this._isMoving = false;
+        this._dx = 0;
+        this._dy = 0;
+
         this.on('user:start', start_game_flow.bind(this));
 
         this.on('user:tick', tick.bind(this));
@@ -49,16 +54,35 @@ exports = Class(ui.View, function (supr) {
             }
 
             this._cannonview.style.r = rotation;
+
+            return rotation;
         }
 
         this.inputUp = function (point) {
-            //console.log("inputUp: " + point.x + "," + point.y);
+            var rotation = this.inputDown(point);
+
+            if (this._isMoving) {
+                return;
+            }
+
+            this._isMoving = true;
+
+            this._ball0.setImage( this._ball1.getImage() );
+            this._ball1.setImage( this._ball2.getImage() );
+            this._ball2.setImage( this.getBall() );
+
+            this._dx = Math.sin(rotation) * this._config.ballFiredSpeed;
+            this._dy = -Math.cos(rotation) * this._config.ballFiredSpeed;
         }
 
     };
 
     this.config = function (config) {
         this._config = config;
+    };
+
+    this.progress = function (progress) {
+        this._progress = progress;
     };
 
 
@@ -79,6 +103,8 @@ exports = Class(ui.View, function (supr) {
  * Game play.
  */
 function start_game_flow () {
+    this.ballBaseX = (this._config.screenWidth - this._config.ballSize) / 2;
+    this.ballBaseY = this._config.screenHeight - (this._config.ballSize * 1.5);
 
     // Fired ball
     this._ball0 = new ImageView({
@@ -86,8 +112,8 @@ function start_game_flow () {
         image: this._config.ballEmpty,
         width: this._config.ballSize,
         height: this._config.ballSize,
-        x: (this._config.screenWidth - this._config.ballSize) / 2,
-        y: this._config.screenHeight - (this._config.ballSize * 1.5)
+        x: this.ballBaseX,
+        y: this.ballBaseY
     });
 
     // Cannon
@@ -108,8 +134,8 @@ function start_game_flow () {
         image: this.getBall(),
         width: this._config.ballSize,
         height: this._config.ballSize,
-        x: (this._config.screenWidth - this._config.ballSize) / 2,
-        y: this._config.screenHeight - (this._config.ballSize * 1.5)
+        x: this.ballBaseX,
+        y: this.ballBaseY
     });
 
     // Next ball
@@ -128,4 +154,11 @@ function start_game_flow () {
  * Game tick.
  */
 function tick () {
+
+    if (!this._isMoving) {
+        return;
+    }
+
+    this._ball0.style.x += this._dx * this._progress;
+    this._ball0.style.y += this._dy * this._progress;
 }

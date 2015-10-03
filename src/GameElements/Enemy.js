@@ -9,6 +9,7 @@ exports = Class(ui.View, function (supr) {
     this.init = function (opts) {
 
         this._config = JSON.parse(CACHE['resources/conf/config.json']);
+        this._progress = 0;
 
         opts = merge(opts, {
             x: 0,
@@ -31,6 +32,10 @@ exports = Class(ui.View, function (supr) {
 
     this.config = function (config) {
         this._config = config;
+    };
+
+    this.progress = function (progress) {
+        this._progress = progress;
     };
 
 });

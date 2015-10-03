@@ -8,5 +8,6 @@
     "ballEmpty": "resources/images/balls/empty.png",
     "hexaGridWidth": 10,
     "hexaGridHeight": 12,
-    "hexaGridFilled": 4
+    "hexaGridFilled": 4,
+    "ballFiredSpeed": 0.3
 }
