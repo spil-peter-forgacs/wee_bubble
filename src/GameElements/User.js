@@ -32,7 +32,7 @@ exports = Class(ui.View, function (supr) {
         }
 
         // Background
-        var bg = new ImageView({
+        this._bg = new ImageView({
             superview: this,
             image: 'resources/images/bg2.jpg',
             width: this._config.screenWidth,
@@ -84,6 +84,15 @@ exports = Class(ui.View, function (supr) {
         this.on('user:start', start_game_flow.bind(this));
 
         this.on('user:tick', tick.bind(this));
+
+        this.inputDown = function (point) {
+            console.log("inputDown: " + point.x + "," + point.y);
+        }
+
+        this.inputUp = function (point) {
+            console.log("inputUp: " + point.x + "," + point.y);
+        }
+
     };
 });
 
