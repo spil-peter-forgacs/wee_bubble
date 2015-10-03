@@ -25,12 +25,13 @@ exports = Class(ui.View, function (supr) {
     };
 
     this.build = function () {
-        this._enemy = new Enemy();
+
         this._user = new User();
+        this._enemy = new Enemy();
         this._hexagrid = new HexaGrid();
 
-        this.addSubview( this._enemy );
         this.addSubview( this._user );
+        this.addSubview( this._enemy );
         this.addSubview( this._hexagrid );
 
         this.on('game1:start', start_game_flow.bind(this));

@@ -3,6 +3,7 @@
  */
 
 import ui.View;
+import ui.ImageView as ImageView;
 
 exports = Class(ui.View, function (supr) {
     this.init = function (opts) {
@@ -10,7 +11,7 @@ exports = Class(ui.View, function (supr) {
             x: 0,
             y: 0,
             width: 320,
-            height: 30,
+            height: 60,
         });
 
         supr(this, 'init', [opts]);
@@ -19,6 +20,16 @@ exports = Class(ui.View, function (supr) {
     };
 
     this.build = function () {
+
+        this._enemyview = new ImageView({
+            superview: this,
+            image: 'resources/images/enemy.png',
+            width: 60,
+            height: 60,
+            x: 0,
+            y: 0
+        });
+
         this.on('enemy:start', start_game_flow.bind(this));
     };
 });

@@ -8,9 +8,9 @@ exports = Class(ui.View, function (supr) {
     this.init = function (opts) {
         opts = merge(opts, {
             x: 0,
-            y: 0,
+            y: 60,
             width: 320,
-            height: 480,
+            height: 420,
         });
 
         supr(this, 'init', [opts]);

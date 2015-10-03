@@ -15,7 +15,7 @@ exports = Class(ui.ImageView, function (supr) {
             y: 0,
             width: 320,
             height: 480,
-            image: "resources/images/galaxysmall.jpg"
+            image: "resources/images/bg1.jpg"
         });
 
         supr(this, 'init', [opts]);
@@ -42,7 +42,7 @@ exports = Class(ui.ImageView, function (supr) {
             verticalAlign: 'middle',
             horizontalAlign: 'center',
             wrap: false,
-            color: '#FFFFFF'
+            color: '#000099'
         });
 
         var buttonview = new ButtonView({
