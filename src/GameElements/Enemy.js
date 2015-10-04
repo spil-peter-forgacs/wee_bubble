@@ -2,6 +2,7 @@
  * Enemy
  */
 
+import animate;
 import ui.View;
 import ui.ImageView as ImageView;
 
@@ -40,6 +41,16 @@ exports = Class(ui.View, function (supr) {
 
     this.resetGame = function () {
         this._progress = 0;
+        this._animator.clear();
+
+        this._enemyview.style.x = 0;
+        this._enemyview.style.y = 0;
+        this._enemyview.style.width = this._config.enemySize;
+        this._enemyview.style.height = this._config.enemySize;
+    }
+
+    this.gameOver = function () {
+        this._animator.now({width: this._config.screenWidth, height: this._config.screenHeight}, 1500, animate.easeIn);
     }
 
 });
@@ -58,6 +69,7 @@ function start_game_flow () {
         y: 0
     });
 
+    this._animator = animate(this._enemyview);
 }
 
 /**

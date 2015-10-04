@@ -4,6 +4,7 @@
 
 import ui.View;
 import ui.ImageView as ImageView;
+import src.soundcontroller as soundcontroller;
 
 exports = Class(ui.View, function (supr) {
 
@@ -93,6 +94,9 @@ exports = Class(ui.View, function (supr) {
 
             this._dx = Math.sin(rotation) * this._config.ballFiredSpeed;
             this._dy = -Math.cos(rotation) * this._config.ballFiredSpeed;
+
+            var sound = soundcontroller.getSound();
+            sound.play('whack');
         }
 
     };

@@ -38,7 +38,7 @@ exports = Class(GC.Application, function () {
         rootView.push(titlescreen);
 
         var sound = soundcontroller.getSound();
-        //sound.play('Pamgaea');
+        sound.play('Pamgaea');
 
         /**
          * Listen for an event dispatched by the title screen.

@@ -16,10 +16,14 @@ exports.getSound = function () {
           background: true,
           loop: true
         },
-        //whack: {
-        //  path: 'effect',
-        //  background: false
-        //}
+        buzz: {
+          path: 'effect',
+          background: false
+        },
+        whack: {
+          path: 'effect',
+          background: false
+        }
       }
     });
   }

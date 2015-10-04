@@ -5,6 +5,7 @@
 import ui.View;
 import ui.ImageView as ImageView;
 import math.geom.intersect as intersect;
+import src.soundcontroller as soundcontroller;
 
 exports = Class(ui.View, function (supr) {
     this.init = function (opts) {
@@ -111,6 +112,9 @@ exports = Class(ui.View, function (supr) {
         }
 
         if (ballHit) {
+            var sound = soundcontroller.getSound();
+            sound.play('buzz');
+
             this.attachBall(firedBall);
         }
 

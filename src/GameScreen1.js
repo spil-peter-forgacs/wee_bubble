@@ -43,12 +43,12 @@ exports = Class(ui.View, function (supr) {
         });
 
         this._user = new User();
-        this._enemy = new Enemy();
         this._hexagrid = new HexaGrid();
+        this._enemy = new Enemy();
 
         this.addSubview( this._user );
-        this.addSubview( this._enemy );
         this.addSubview( this._hexagrid );
+        this.addSubview( this._enemy );
 
         this.on('game1:start', start_game_flow.bind(this));
 
@@ -101,10 +101,11 @@ function start_game_flow () {
 function tick () {
     // Game over. The user lost.
     if (!this._hexagrid.getGridState()) {
+        this._enemy.gameOver();
 
         setTimeout(bind(this, function () {
             this.emit('gamescreen1:end');
-        }), 2000);
+        }), 4000);
 
         return;
     }
