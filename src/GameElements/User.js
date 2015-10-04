@@ -36,6 +36,10 @@ exports = Class(ui.View, function (supr) {
         this._dx = 0;
         this._dy = 0;
 
+        this._ball0Id = this.getBallId();
+        this._ball1Id = this.getBallId();
+        this._ball2Id = this.getBallId();
+
         this.on('user:start', start_game_flow.bind(this));
 
         this.on('user:tick', tick.bind(this));
@@ -78,9 +82,13 @@ exports = Class(ui.View, function (supr) {
 
             this._isMoving = true;
 
-            this._ball0.setImage( this._ball1.getImage() );
-            this._ball1.setImage( this._ball2.getImage() );
-            this._ball2.setImage( this.getBall() );
+            // Update model and view.
+            this._ball0Id = this._ball1Id;
+            this._ball1Id = this._ball2Id;
+            this._ball2Id = this.getBallId();
+            this._ball0.setImage( this.getBallSrc( this._ball0Id ) );
+            this._ball1.setImage( this.getBallSrc( this._ball1Id ) );
+            this._ball2.setImage( this.getBallSrc( this._ball2Id ) );
 
             this._dx = Math.sin(rotation) * this._config.ballFiredSpeed;
             this._dy = -Math.cos(rotation) * this._config.ballFiredSpeed;
@@ -97,7 +105,10 @@ exports = Class(ui.View, function (supr) {
     };
 
     this.getFiredBall = function () {
-        return this._ball0;
+        return {
+            "model": this._ball0Id,
+            "view": this._ball0
+        };
     }
 
     /**
@@ -118,14 +129,25 @@ exports = Class(ui.View, function (supr) {
     }
 
     /**
-     * Get a random ball.
+     * Get a random ball id.
      *
      * @return string ball
      */
-    this.getBall = function () {
-        var ball = this._balls[ Math.floor( Math.random() * this._config.ballLength) ];
+    this.getBallId = function () {
+        var ball = Math.floor( Math.random() * this._config.ballLength);
 
         return ball;
+    }
+
+    /**
+     * Get the ball src.
+     *
+     * @param int i
+     */
+    this.getBallSrc = function ( i ) {
+        var ballSrc = this._balls[ i ];
+
+        return ballSrc;
     }
 
 });
@@ -134,13 +156,17 @@ exports = Class(ui.View, function (supr) {
  * Game play.
  */
 function start_game_flow () {
+    this._ball0Id = this.getBallId();
+    this._ball1Id = this.getBallId();
+    this._ball2Id = this.getBallId();
+
     this._ballBaseX = (this._config.screenWidth - this._config.ballSize) / 2;
     this._ballBaseY = this._config.screenHeight - (this._config.ballSize * 1.5);
 
     // Fired ball
     this._ball0 = new ImageView({
         superview: this,
-        image: this._config.ballEmpty,
+        image: this.getBallSrc( this._ball0Id ),
         width: this._config.ballSize,
         height: this._config.ballSize,
         x: this._ballBaseX,
@@ -162,7 +188,7 @@ function start_game_flow () {
     // Cannon ball
     this._ball1 = new ImageView({
         superview: this,
-        image: this.getBall(),
+        image: this.getBallSrc( this._ball1Id ),
         width: this._config.ballSize,
         height: this._config.ballSize,
         x: this._ballBaseX,
@@ -172,7 +198,7 @@ function start_game_flow () {
     // Next ball
     this._ball2 = new ImageView({
         superview: this,
-        image: this.getBall(),
+        image: this.getBallSrc( this._ball2Id ),
         width: this._config.ballSize,
         height: this._config.ballSize,
         x: (this._config.screenWidth / 2) - this._config.cannonSize,
