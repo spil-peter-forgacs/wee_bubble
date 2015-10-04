@@ -105,6 +105,27 @@ exports = Class(ui.View, function (supr) {
         this._progress = progress;
     };
 
+    this.resetGame = function () {
+        this._progress = 0;
+
+        this._isMoving = false;
+        this._dx = 0;
+        this._dy = 0;
+
+        this._ball0Id = this.getBallId();
+        this._ball1Id = this.getBallId();
+        this._ball2Id = this.getBallId();
+
+        this._ball0.setImage( this.getBallSrc( this._ball0Id ) );
+        this._ball1.setImage( this.getBallSrc( this._ball1Id ) );
+        this._ball2.setImage( this.getBallSrc( this._ball2Id ) );
+
+        this._ballBaseX = (this._config.screenWidth - this._config.ballSize) / 2;
+        this._ballBaseY = this._config.screenHeight - (this._config.ballSize * 1.5);
+
+        this._cannonview.style.r = 0;
+    }
+
     this.getFiredBall = function () {
         if (!this._isMoving) {
             return null;

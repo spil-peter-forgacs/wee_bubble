@@ -67,6 +67,17 @@ exports = Class(ui.View, function (supr) {
                 this._user.inputDown(point);
             }
         });
+
+        // Game setup
+        this._config.ballLength = 3;
+
+        this._user.config(this._config);
+        this._enemy.config(this._config);
+        this._hexagrid.config(this._config);
+
+        this._user.emit('user:start');
+        this._enemy.emit('enemy:start');
+        this._hexagrid.emit('hexagrid:start');
     };
 });
 
@@ -74,17 +85,11 @@ exports = Class(ui.View, function (supr) {
  * Game play.
  */
 function start_game_flow () {
-    // Game setup
-    this._config.ballLength = 3;
-
-    this._user.config(this._config);
-    this._enemy.config(this._config);
-    this._hexagrid.config(this._config);
 
     // Sub setup
-    this._user.emit('user:start');
-    this._enemy.emit('enemy:start');
-    this._hexagrid.emit('hexagrid:start');
+    this._user.resetGame();
+    this._enemy.resetGame();
+    this._hexagrid.resetGame();
 
     this._startTime = Date.now();
     window.requestAnimationFrame(tick.bind(this));
@@ -94,6 +99,16 @@ function start_game_flow () {
  * Game tick.
  */
 function tick () {
+    // Game over. The user lost.
+    if (!this._hexagrid.getGridState()) {
+
+        setTimeout(bind(this, function () {
+            this.emit('gamescreen1:end');
+        }), 2000);
+
+        return;
+    }
+
     var timestamp = Date.now();
     var progress = timestamp - this._startTime;
 

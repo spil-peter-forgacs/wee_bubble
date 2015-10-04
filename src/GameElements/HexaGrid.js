@@ -11,7 +11,9 @@ exports = Class(ui.View, function (supr) {
 
         this._config = JSON.parse(CACHE['resources/conf/config.json']);
         this._progress = 0;
-        this.lowestBall = 0;
+
+        // Game state.
+        this._gridRun = true;
 
         opts = merge(opts, {
             x: 0,
@@ -44,6 +46,31 @@ exports = Class(ui.View, function (supr) {
     this.progress = function (progress) {
         this._progress = progress;
     };
+
+    this.resetGame = function () {
+        this._progress = 0;
+        this._gridRun = true;
+        this.style.y = 0;
+
+        // Reset hexagrid.
+        for (var i = 0; i < this._config.hexaGridHeight; i++) {
+            for (var j = 0; j < this._config.hexaGridWidth; j++) {
+
+                // Model.
+                this._hexagridId[i][j] = null;
+                if (i < this._config.hexaGridFilled) {
+                    this._hexagridId[i][j] = Math.floor( Math.random() * this._config.ballLength);
+                }
+
+                // View.
+                this._hexagrid[i][j].setImage( this.getBallSrc( this._hexagridId[i][j] ) );
+            }
+        }
+    }
+
+    this.getGridState = function() {
+        return this._gridRun;
+    }
 
     /**
      * Get ball src from id
@@ -277,16 +304,17 @@ function start_game_flow () {
  */
 function tick () {
     // Check lowest ball.
-    this.lowestBall = 0;
+    var lowestBall = 0;
     for (var i = 0; i < this._config.hexaGridHeight; i++) {
         for (var j = 0; j < this._config.hexaGridWidth; j++) {
             if (this._hexagridId[i][j] !== null) {
-                this.lowestBall = i;
+                lowestBall = i;
             }
         }
     }
 
-    if (this.lowestBall >= 10) {
+    if (lowestBall >= 10) {
+        this._gridRun = false;
         return;
     }
 

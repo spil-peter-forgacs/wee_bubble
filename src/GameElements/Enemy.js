@@ -15,7 +15,7 @@ exports = Class(ui.View, function (supr) {
             x: 0,
             y: 0,
             width: this._config.screenWidth,
-            height: this._config.enemySize,
+            height: this._config.screenHeight,
         });
 
         supr(this, 'init', [opts]);
@@ -37,6 +37,10 @@ exports = Class(ui.View, function (supr) {
     this.progress = function (progress) {
         this._progress = progress;
     };
+
+    this.resetGame = function () {
+        this._progress = 0;
+    }
 
 });
 
