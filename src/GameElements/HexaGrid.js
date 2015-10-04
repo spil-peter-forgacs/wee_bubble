@@ -14,7 +14,7 @@ exports = Class(ui.View, function (supr) {
 
         opts = merge(opts, {
             x: 0,
-            y: this._config.enemySize,
+            y: 0,
             width: this._config.screenWidth,
             height: this._config.screenHeight - this._config.enemySize,
         });
@@ -72,7 +72,7 @@ exports = Class(ui.View, function (supr) {
         var ballHit = false;
 
         for (var i = 0; i < this._config.hexaGridHeight; i++) {
-            for (var j = 0; j < this._config.hexaGridWidth; j++) {
+            for (var j = this._config.hexaGridWidth - 1; j >= 0; j--) {
 
                 // If not empty.
                 if (this._hexagridId[i][j] !== null && !ballHit) {
@@ -82,9 +82,38 @@ exports = Class(ui.View, function (supr) {
             }
         }
 
+        if (ballHit) {
+            this.attachBall(firedBall);
+        }
+
         return ballHit;
     }
 
+    this.attachBall = function (firedBall) {
+        // Calculation of position.
+        var x = firedBall.view.style.x;
+        var y = firedBall.view.style.y;
+
+        var i = (y - this._config.enemySize) / this._config.ballSize;
+        i = Math.ceil(i);
+        var j = (x - ((i % 2) * (this._config.ballSize / 2))) / this._config.ballSize;
+        j = Math.round(j);
+
+        // Border cases.
+        j = (j >= this._config.hexaGridWidth ? j - 1 : j);
+        j = (j <= 0 ? 0 : j);
+
+
+        // Attach.
+        this._hexagridId[i][j] = firedBall.model;
+        this._hexagrid[i][j].setImage( this.getBallSrc( firedBall.model ) );
+    }
+
+    this.removeBalls = function () {
+    }
+
+    this.removeFloatingBalls = function () {
+    }
 });
 
 /**
@@ -111,8 +140,8 @@ function start_game_flow () {
                 image: this.getBallSrc( this._hexagridId[i][j] ),
                 width: this._config.ballSize,
                 height: this._config.ballSize,
-                x: (j * this._config.ballSize) + (i % 2) * (this._config.ballSize / 2),
-                y: (i * this._config.ballSize)
+                x: (j * this._config.ballSize) + ((i % 2) * (this._config.ballSize / 2)),
+                y: (i * this._config.ballSize) + this._config.enemySize
             });
         }
     }
