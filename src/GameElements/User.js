@@ -40,6 +40,7 @@ exports = Class(ui.View, function (supr) {
 
         this.on('user:tick', tick.bind(this));
 
+        // Rotation of cannon.
         this.inputDown = function (point) {
             var cannonCenterX = this._cannonview.style.x + (this._config.cannonSize / 2);
             var cannonCenterY = this._cannonview.style.y + (this._config.cannonSize / 2);
@@ -53,11 +54,21 @@ exports = Class(ui.View, function (supr) {
                 rotation = Math.atan2(deltaY, deltaX) + (Math.PI / 2);
             }
 
+            // Safety element.
+            // We want to allow user shoot to reverse direction.
+            if (rotation > Math.PI / 4 && rotation < Math.PI) {
+                rotation = Math.PI / 4;
+            }
+            else if (rotation < -Math.PI / 4 || rotation > Math.PI) {
+                rotation = -Math.PI / 4;
+            }
+
             this._cannonview.style.r = rotation;
 
             return rotation;
         }
 
+        // Firing cannon.
         this.inputUp = function (point) {
             var rotation = this.inputDown(point);
 
