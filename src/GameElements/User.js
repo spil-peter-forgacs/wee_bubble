@@ -60,11 +60,12 @@ exports = Class(ui.View, function (supr) {
 
             // Safety element.
             // We want to allow user shoot to reverse direction.
-            if (rotation > Math.PI / 4 && rotation < Math.PI) {
-                rotation = Math.PI / 4;
+            var maxRotation = 3 * Math.PI / 8;
+            if (rotation > maxRotation && rotation < Math.PI) {
+                rotation = maxRotation;
             }
-            else if (rotation < -Math.PI / 4 || rotation > Math.PI) {
-                rotation = -Math.PI / 4;
+            else if (rotation < -maxRotation || rotation > Math.PI) {
+                rotation = -maxRotation;
             }
 
             this._cannonview.style.r = rotation;

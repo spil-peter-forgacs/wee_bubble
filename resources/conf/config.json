@@ -7,7 +7,7 @@
     "ballLength": 16,
     "ballEmpty": "resources/images/balls/empty.png",
     "hexaGridWidth": 10,
-    "hexaGridHeight": 12,
+    "hexaGridHeight": 14,
     "hexaGridFilled": 5,
     "ballFiredSpeed": 0.4
 }
