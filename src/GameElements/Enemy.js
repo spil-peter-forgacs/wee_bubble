@@ -55,7 +55,11 @@ exports = Class(ui.View, function (supr) {
     }
 
     this.gameOver = function () {
-        this._animator.now({width: this._config.screenWidth, height: this._config.screenHeight}, 1500, animate.easeIn);
+        this._animator.now({
+            x: 0,
+            width: this._config.screenWidth,
+            height: this._config.screenHeight
+        }, 1500, animate.easeIn);
     }
 
 });

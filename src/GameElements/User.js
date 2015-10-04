@@ -235,6 +235,15 @@ function start_game_flow () {
         y: this._config.screenHeight - this._config.ballSize
     });
 
+    this.bottomLine = new ui.View({
+        superview: this,
+        x: 0,
+        y: this._config.screenHeight - this._config.cannonSize - this._config.ballSize,
+        width: this._config.screenWidth,
+        height: 3,
+        backgroundColor: '#000000'
+    });
+
 }
 
 /**
