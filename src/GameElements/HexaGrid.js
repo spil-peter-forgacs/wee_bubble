@@ -317,6 +317,8 @@ function tick () {
         }
     }
 
+    lowestBall += Math.floor(this.style.y / this._config.ballSize);
+
     if (lowestBall >= 10) {
         this._gridRun = false;
         return;
