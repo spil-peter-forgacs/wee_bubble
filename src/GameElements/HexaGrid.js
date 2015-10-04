@@ -4,6 +4,7 @@
 
 import ui.View;
 import ui.ImageView as ImageView;
+import math.geom.intersect as intersect;
 
 exports = Class(ui.View, function (supr) {
     this.init = function (opts) {
@@ -62,6 +63,10 @@ exports = Class(ui.View, function (supr) {
 
     /**
      * Check, if the fired ball hit hexagrid.
+     *
+     * @param Object firedBall
+     *
+     * @return boolean ballHit
      */
     this.checkHit = function (firedBall) {
         var ballHit = false;
@@ -69,10 +74,10 @@ exports = Class(ui.View, function (supr) {
         for (var i = 0; i < this._config.hexaGridHeight; i++) {
             for (var j = 0; j < this._config.hexaGridWidth; j++) {
 
-                //var imageURL = this._hexagrid[i][j].getImage().getURL();
-                //console.warn('I was: ', imageURL, this._config.ballEmpty);
-                //if (imageURL === this._config.ballEmpty) {
-                //}
+                // If not empty.
+                if (this._hexagridId[i][j] !== null && !ballHit) {
+                    ballHit = intersect.rectAndRect(this._hexagrid[i][j].style, firedBall.view.style);
+                }
 
             }
         }

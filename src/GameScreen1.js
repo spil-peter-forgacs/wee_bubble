@@ -107,8 +107,10 @@ function tick () {
 
     // Check, if the fired ball hit the hexagrid.
     var firedBall = this._user.getFiredBall();
-    var ballHit = this._hexagrid.checkHit(firedBall);
-    this._user.firedHit(ballHit);
+    if (firedBall) {
+        var ballHit = this._hexagrid.checkHit(firedBall);
+        this._user.firedHit(ballHit);
+    }
 
     this._startTime = timestamp;
     window.requestAnimationFrame(tick.bind(this));

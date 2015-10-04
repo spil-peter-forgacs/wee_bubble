@@ -105,6 +105,10 @@ exports = Class(ui.View, function (supr) {
     };
 
     this.getFiredBall = function () {
+        if (!this._isMoving) {
+            return null;
+        }
+
         return {
             "model": this._ball0Id,
             "view": this._ball0
