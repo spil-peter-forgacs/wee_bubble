@@ -2,12 +2,14 @@
     "screenWidth": 320,
     "screenHeight": 480,
     "ballSize": 30,
-    "enemySize": 60,
     "cannonSize": 60,
     "ballLength": 16,
     "ballEmpty": "resources/images/balls/empty.png",
     "hexaGridWidth": 10,
     "hexaGridHeight": 14,
     "hexaGridFilled": 5,
-    "ballFiredSpeed": 0.4
+    "hexaGridSpeed": 0.01,
+    "ballFiredSpeed": 0.4,
+    "enemySize": 60,
+    "enemySpeed": 0.01
 }

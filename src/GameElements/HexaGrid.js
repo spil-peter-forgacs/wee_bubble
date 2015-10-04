@@ -106,7 +106,7 @@ exports = Class(ui.View, function (supr) {
 
         // Same line is occipied.
         // Use next line.
-        if (this._hexagridId[i][j]) {
+        if (this._hexagridId[i][j] !== null) {
             i = Math.ceil(ir);
             jr = (x - ((i % 2) * (this._config.ballSize / 2))) / this._config.ballSize;
             j = Math.round(jr);
