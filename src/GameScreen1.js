@@ -53,16 +53,28 @@ exports = Class(ui.View, function (supr) {
         this.on('game1:start', start_game_flow.bind(this));
 
         this.on('InputStart', function (event, point) {
+            if (!this._hexagrid.getGridState()) {
+                return;
+            }
+
             this._input = true;
             this._user.inputDown(point);
         });
 
         this.on('InputSelect', function (event, point) {
+            if (!this._hexagrid.getGridState()) {
+                return;
+            }
+
             this._input = false;
             this._user.inputUp(point);
         });
 
         this.on('InputMove', function (event, point) {
+            if (!this._hexagrid.getGridState()) {
+                return;
+            }
+
             if (this._input) {
                 this._user.inputDown(point);
             }
