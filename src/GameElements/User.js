@@ -46,7 +46,7 @@ exports = Class(ui.View, function (supr) {
             superview: this,
             width: 1,
             height: 1,
-            initCount: 10
+            initCount: 30
         });
 
         this.on('user:start', start_game_flow.bind(this));
