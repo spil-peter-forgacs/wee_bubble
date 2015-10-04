@@ -133,17 +133,12 @@ exports = Class(ui.View, function (supr) {
  * Game play.
  */
 function start_game_flow () {
-    //var hitSize = this._config.ballSize * 0.8;
-    //var hitDelta = (this._config.ballSize - hitSize) / 2;
-
     // Create the hexagrid.
     this._hexagridId = [];
     this._hexagrid = [];
-    //this._hexagridHit = [];
     for (var i = 0; i < this._config.hexaGridHeight; i++) {
         this._hexagridId[i] = [];
         this._hexagrid[i] = [];
-        //this._hexagridHit[i] = [];
         for (var j = 0; j < this._config.hexaGridWidth; j++) {
 
             // Model.
@@ -161,16 +156,6 @@ function start_game_flow () {
                 x: (j * this._config.ballSize) + ((i % 2) * (this._config.ballSize / 2)),
                 y: (i * this._config.ballSize) + this._config.enemySize
             });
-
-            // Hit check.
-            //this._hexagridHit[i][j] = new ImageView({
-            //    superview: this,
-            //    image: this._config.ballEmpty,
-            //    width: hitSize,
-            //    height: hitSize,
-            //    x: hitDelta + (j * this._config.ballSize) + ((i % 2) * (this._config.ballSize / 2)),
-            //    y: hitDelta + (i * this._config.ballSize) + this._config.enemySize
-            //});
         }
     }
 
