@@ -46,6 +46,15 @@ exports = Class(ui.View, function (supr) {
         this._progress = progress;
     };
 
+    /**
+     * Check, if the fired ball hit hexagrid.
+     */
+    this.checkHit = function (firedBall) {
+        var ballHit = false;
+
+        return ballHit;
+    }
+
 });
 
 /**

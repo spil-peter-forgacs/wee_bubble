@@ -96,6 +96,26 @@ exports = Class(ui.View, function (supr) {
         this._progress = progress;
     };
 
+    this.getFiredBall = function () {
+        return this._ball0;
+    }
+
+    /**
+     * Did the ball hit something?
+     *
+     * @param boolean ballHit
+     */
+    this.firedHit = function (ballHit) {
+        if (!ballHit) {
+            return;
+        }
+
+        this._isMoving = false;
+
+        // Reset base position.
+        this._ball0.style.x = this._ballBaseX;
+        this._ball0.style.y = this._ballBaseY;
+    }
 
     /**
      * Get a random ball.

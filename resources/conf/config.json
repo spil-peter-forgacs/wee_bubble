@@ -9,5 +9,5 @@
     "hexaGridWidth": 10,
     "hexaGridHeight": 12,
     "hexaGridFilled": 4,
-    "ballFiredSpeed": 0.3
+    "ballFiredSpeed": 0.4
 }
