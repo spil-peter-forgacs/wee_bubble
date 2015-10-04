@@ -100,33 +100,10 @@ exports = Class(ui.View, function (supr) {
     this.checkHit = function (firedBall) {
         var ballHit = false;
 
-        for (var i = 0; i < this._config.hexaGridHeight; i++) {
-            for (var j = this._config.hexaGridWidth - 1; j >= 0; j--) {
-
-                // If not empty.
-                if (this._hexagridId[i][j] !== null && !ballHit) {
-                    ballHit = intersect.rectAndRect(this._hexagrid[i][j].style, firedBall.view.style);
-                }
-
-            }
-        }
-
-        if (ballHit) {
-            var sound = soundcontroller.getSound();
-            sound.play('buzz');
-
-            this.attachBall(firedBall);
-        }
-
-        return ballHit;
-    }
-
-    this.attachBall = function (firedBall) {
         // Calculation of position.
         var x = firedBall.view.style.x;
         var y = firedBall.view.style.y;
 
-        // Same line.
         var ir = (y - this._config.enemySize) / this._config.ballSize;
         var i = Math.round(ir);
         var jr = (x - ((i % 2) * (this._config.ballSize / 2))) / this._config.ballSize;
@@ -136,19 +113,80 @@ exports = Class(ui.View, function (supr) {
         j = (j >= this._config.hexaGridWidth ? j - 1 : j);
         j = (j <= 0 ? 0 : j);
 
-        // Same line is occipied.
-        // Use next line.
-        if (this._hexagridId[i][j] !== null) {
-            i = Math.ceil(ir);
-            jr = (x - ((i % 2) * (this._config.ballSize / 2))) / this._config.ballSize;
-            j = Math.round(jr);
-
-            // Border cases.
-            j = (j >= this._config.hexaGridWidth ? j - 1 : j);
-            j = (j <= 0 ? 0 : j);
+        if (i < 0) {
+            return ballHit;
         }
 
 
+        // Helper variable.
+        var k;
+
+        // Alternative empty space.
+        var alternativeI = null;
+        var alternativeJ = null;
+
+        if (j > 0) {
+            ballHit = (ballHit || this._hexagridId[i][j - 1] !== null);
+            if (this._hexagridId[i][j - 1] !== null) {
+                alternativeI = i;
+                alternativeJ = j - 1;
+            }
+        }
+        if (j < this._config.hexaGridWidth - 1) {
+            ballHit = (ballHit || this._hexagridId[i][j + 1] !== null);
+            if (this._hexagridId[i][j + 1] !== null) {
+                alternativeI = i;
+                alternativeJ = j + 1;
+            }
+        }
+        if (i > 0) {
+            k = j - 1 + (i % 2);
+            if (k >= 0) {
+                ballHit = (ballHit || this._hexagridId[i - 1][k] !== null);
+            }
+            k = j + (i % 2);
+            if (k < this._config.hexaGridWidth) {
+                ballHit = (ballHit || this._hexagridId[i - 1][k] !== null);
+            }
+        }
+        if (i < this._config.hexaGridHeight) {
+            k = j - 1 + (i % 2);
+            if (k >= 0) {
+                ballHit = (ballHit || this._hexagridId[i + 1][k] !== null);
+                if (this._hexagridId[i + 1][k] !== null) {
+                    alternativeI = i + 1;
+                    alternativeJ = k;
+                }
+            }
+            k = j + (i % 2);
+            if (k < this._config.hexaGridWidth) {
+                ballHit = (ballHit || this._hexagridId[i + 1][k] !== null);
+                if (this._hexagridId[i + 1][k] !== null) {
+                    alternativeI = i + 1;
+                    alternativeJ = k;
+                }
+            }
+        }
+
+        // If the calculated place occupied, choose the alternative empty one.
+        if (this._hexagridId[i][j] !== null && alternativeI && alternativeJ) {
+            ballHit = true;
+            i = alternativeI;
+            j = alternativeJ;
+        }
+
+
+        if (ballHit) {
+            var sound = soundcontroller.getSound();
+            sound.play('buzz');
+
+            this.attachBall(firedBall, i, j);
+        }
+
+        return ballHit;
+    }
+
+    this.attachBall = function (firedBall, i, j) {
         // Attach.
         this._hexagridId[i][j] = firedBall.model;
         this._hexagrid[i][j].setImage( this.getBallSrc( firedBall.model ) );
