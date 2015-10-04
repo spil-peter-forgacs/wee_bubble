@@ -103,8 +103,8 @@ exports = Class(ui.View, function (supr) {
  * Game play.
  */
 function start_game_flow () {
-    this.ballBaseX = (this._config.screenWidth - this._config.ballSize) / 2;
-    this.ballBaseY = this._config.screenHeight - (this._config.ballSize * 1.5);
+    this._ballBaseX = (this._config.screenWidth - this._config.ballSize) / 2;
+    this._ballBaseY = this._config.screenHeight - (this._config.ballSize * 1.5);
 
     // Fired ball
     this._ball0 = new ImageView({
@@ -112,8 +112,8 @@ function start_game_flow () {
         image: this._config.ballEmpty,
         width: this._config.ballSize,
         height: this._config.ballSize,
-        x: this.ballBaseX,
-        y: this.ballBaseY
+        x: this._ballBaseX,
+        y: this._ballBaseY
     });
 
     // Cannon
@@ -134,8 +134,8 @@ function start_game_flow () {
         image: this.getBall(),
         width: this._config.ballSize,
         height: this._config.ballSize,
-        x: this.ballBaseX,
-        y: this.ballBaseY
+        x: this._ballBaseX,
+        y: this._ballBaseY
     });
 
     // Next ball
@@ -161,4 +161,29 @@ function tick () {
 
     this._ball0.style.x += this._dx * this._progress;
     this._ball0.style.y += this._dy * this._progress;
+
+    // Left edge.
+    if (this._ball0.style.x < 0) {
+        this._dx = -this._dx;
+        this._ball0.style.x = -this._ball0.style.x;
+    }
+    // Right edge.
+    else if (this._ball0.style.x + this._config.ballSize > this._config.screenWidth) {
+        this._dx = -this._dx;
+        this._ball0.style.x -= this._ball0.style.x - (this._config.screenWidth - this._config.ballSize);
+    }
+
+    // Top edge.
+    if (this._ball0.style.y + this._config.ballSize < 0) {
+        this._isMoving = false;
+    }
+    // Bottom edge.
+    else if (this._ball0.style.y > this._config.screenHeight) {
+        this._isMoving = false;
+    }
+
+    if (!this._isMoving) {
+        this._ball0.style.x = this._ballBaseX;
+        this._ball0.style.y = this._ballBaseY;
+    }
 }
