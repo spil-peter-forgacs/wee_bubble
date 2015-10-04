@@ -7,7 +7,7 @@
     "ballEmpty": "resources/images/balls/empty.png",
     "hexaGridWidth": 10,
     "hexaGridHeight": 14,
-    "hexaGridFilled": 5,
+    "hexaGridFilled": 4,
     "hexaGridSpeed": 0.005,
     "ballFiredSpeed": 0.4,
     "enemySize": 60,

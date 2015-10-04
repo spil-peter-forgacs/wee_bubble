@@ -5,6 +5,7 @@
 import ui.View;
 import ui.ImageView as ImageView;
 import src.soundcontroller as soundcontroller;
+import ui.ParticleEngine as ParticleEngine;
 
 exports = Class(ui.View, function (supr) {
 
@@ -40,6 +41,13 @@ exports = Class(ui.View, function (supr) {
         this._ball0Id = this.getBallId();
         this._ball1Id = this.getBallId();
         this._ball2Id = this.getBallId();
+
+        this.pEngine = new ParticleEngine({
+            superview: this,
+            width: 1,
+            height: 1,
+            initCount: 10
+        });
 
         this.on('user:start', start_game_flow.bind(this));
 
@@ -151,6 +159,21 @@ exports = Class(ui.View, function (supr) {
             return;
         }
 
+
+        var particleObjects = this.pEngine.obtainParticleArray(10);
+        for (var i = 0; i < 10; i++) {
+            var pObj = particleObjects[i];
+            pObj.dx = Math.random() * 100;
+            pObj.dy = Math.random() * 100;
+            pObj.width = 20;
+            pObj.height = 20;
+            pObj.image = 'resources/images/sparkle.png';
+            pObj.x = this._ball0.style.x;
+            pObj.y = this._ball0.style.y;
+        }
+        this.pEngine.emitParticles(particleObjects);
+
+
         this._isMoving = false;
 
         // Reset base position.
@@ -250,6 +273,9 @@ function start_game_flow () {
  * Game tick.
  */
 function tick () {
+    // Particle
+    this.pEngine.runTick(this._progress);
+
 
     if (!this._isMoving) {
         return;
