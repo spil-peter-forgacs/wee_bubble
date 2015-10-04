@@ -161,8 +161,12 @@ exports = Class(ui.View, function (supr) {
             return chain;
         }
 
-        // Markable?
-        if (this._hexagridId[i][j] !== id) {
+        // Not markable for remove balls?
+        if (id !== null && this._hexagridId[i][j] !== id) {
+            return chain;
+        }
+        // Not markable for floating balls?
+        if (id === null && this._hexagridId[i][j] === null) {
             return chain;
         }
 
@@ -216,7 +220,22 @@ exports = Class(ui.View, function (supr) {
             }
         }
 
-        //@TODO
+
+        var chain = 0;
+        var id = null;
+        for (var j = 0; j < this._config.hexaGridWidth; j++) {
+            chain = this.markBall(0, j, id, chain);
+        }
+
+        // Remove
+        for (var i = 0; i < this._config.hexaGridHeight; i++) {
+            for (var j = 0; j < this._config.hexaGridWidth; j++) {
+                if (!this._hexagridTmp[i][j]) {
+                    this._hexagridId[i][j] = null;
+                    this._hexagrid[i][j].setImage( this._config.ballEmpty );
+                }
+            }
+        }
     }
 });
 
