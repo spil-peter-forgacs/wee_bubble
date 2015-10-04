@@ -11,6 +11,7 @@ exports = Class(ui.View, function (supr) {
 
         this._config = JSON.parse(CACHE['resources/conf/config.json']);
         this._progress = 0;
+        this.lowestBall = 0;
 
         opts = merge(opts, {
             x: 0,
@@ -275,4 +276,42 @@ function start_game_flow () {
  * Game tick.
  */
 function tick () {
+    // Check lowest ball.
+    this.lowestBall = 0;
+    for (var i = 0; i < this._config.hexaGridHeight; i++) {
+        for (var j = 0; j < this._config.hexaGridWidth; j++) {
+            if (this._hexagridId[i][j] !== null) {
+                this.lowestBall = i;
+            }
+        }
+    }
+
+    if (this.lowestBall >= 10) {
+        return;
+    }
+
+
+    // Move grid.
+    this.style.y += this._config.hexaGridSpeed * this._progress;
+
+    if (this.style.y < 2 * this._config.ballSize) {
+        return;
+    }
+
+
+    // Create new lines.
+    this.style.y -= 2 * this._config.ballSize;
+
+    for (var i = this._config.hexaGridHeight - 1; i >= 0 ; i--) {
+        for (var j = 0; j < this._config.hexaGridWidth; j++) {
+            if (i > 1) {
+                this._hexagridId[i][j] = this._hexagridId[i - 2][j];
+            }
+            else {
+                this._hexagridId[i][j] = Math.floor( Math.random() * this._config.ballLength);
+            }
+            this._hexagrid[i][j].setImage( this.getBallSrc( this._hexagridId[i][j] ) );
+        }
+    }
+
 }
