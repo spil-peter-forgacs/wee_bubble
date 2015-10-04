@@ -12,6 +12,9 @@ exports = Class(ui.View, function (supr) {
         this._config = JSON.parse(CACHE['resources/conf/config.json']);
         this._progress = 0;
 
+        //@TODO: Later development. Moving the enemy.
+        this._enemyDirection = 1;
+
         opts = merge(opts, {
             x: 0,
             y: 0,
@@ -41,9 +44,11 @@ exports = Class(ui.View, function (supr) {
 
     this.resetGame = function () {
         this._progress = 0;
+        this._enemyDirection = 1;
+
         this._animator.clear();
 
-        this._enemyview.style.x = 0;
+        this._enemyview.style.x = (this._config.screenWidth - this._config.enemySize) / 2;
         this._enemyview.style.y = 0;
         this._enemyview.style.width = this._config.enemySize;
         this._enemyview.style.height = this._config.enemySize;
@@ -65,7 +70,7 @@ function start_game_flow () {
         image: 'resources/images/enemy.png',
         width: this._config.enemySize,
         height: this._config.enemySize,
-        x: 0,
+        x: (this._config.screenWidth - this._config.enemySize) / 2,
         y: 0
     });
 

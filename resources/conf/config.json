@@ -8,8 +8,8 @@
     "hexaGridWidth": 10,
     "hexaGridHeight": 14,
     "hexaGridFilled": 5,
-    "hexaGridSpeed": 0.01,
+    "hexaGridSpeed": 0.005,
     "ballFiredSpeed": 0.4,
     "enemySize": 60,
-    "enemySpeed": 0.01
+    "enemySpeed": 0.1
 }
