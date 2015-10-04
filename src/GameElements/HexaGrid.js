@@ -107,9 +107,9 @@ exports = Class(ui.View, function (supr) {
         // Same line is occipied.
         // Use next line.
         if (this._hexagridId[i][j]) {
-            var i = Math.ceil(ir);
-            var jr = (x - ((i % 2) * (this._config.ballSize / 2))) / this._config.ballSize;
-            var j = Math.round(jr);
+            i = Math.ceil(ir);
+            jr = (x - ((i % 2) * (this._config.ballSize / 2))) / this._config.ballSize;
+            j = Math.round(jr);
 
             // Border cases.
             j = (j >= this._config.hexaGridWidth ? j - 1 : j);
@@ -120,12 +120,103 @@ exports = Class(ui.View, function (supr) {
         // Attach.
         this._hexagridId[i][j] = firedBall.model;
         this._hexagrid[i][j].setImage( this.getBallSrc( firedBall.model ) );
+
+        this.removeBalls(i, j);
     }
 
-    this.removeBalls = function () {
+    this.removeBalls = function (posI, posJ) {
+        // Create tmp grid.
+        this._hexagridTmp = [];
+        for (var i = 0; i < this._config.hexaGridHeight; i++) {
+            this._hexagridTmp[i] = [];
+            for (var j = 0; j < this._config.hexaGridWidth; j++) {
+                this._hexagridTmp[i][j] = null;
+            }
+        }
+
+        var chain = 0;
+        var id = this._hexagridId[posI][posJ];
+        chain = this.markBall(posI, posJ, id, chain);
+
+        if (chain < 3) {
+            return;
+        }
+
+        // Remove
+        for (var i = 0; i < this._config.hexaGridHeight; i++) {
+            for (var j = 0; j < this._config.hexaGridWidth; j++) {
+                if (this._hexagridTmp[i][j]) {
+                    this._hexagridId[i][j] = null;
+                    this._hexagrid[i][j].setImage( this._config.ballEmpty );
+                }
+            }
+        }
+
+        this.removeFloatingBalls();
+    }
+
+    this.markBall = function (i, j, id, chain) {
+        // It is already marked?
+        if (this._hexagridTmp[i][j]) {
+            return chain;
+        }
+
+        // Markable?
+        if (this._hexagridId[i][j] !== id) {
+            return chain;
+        }
+
+        // Mark it.
+        this._hexagridTmp[i][j] = true;
+        chain++;
+
+
+        // Check neighbours.
+
+        // Helper variable.
+        var k;
+
+        if (j > 0) {
+            chain = this.markBall(i, j - 1, id, chain);
+        }
+        if (j < this._config.hexaGridWidth - 1) {
+            chain = this.markBall(i, j + 1, id, chain);
+        }
+        if (i > 0) {
+            k = j - 1 + (i % 2);
+            if (k >= 0) {
+                chain = this.markBall(i - 1, k, id, chain);
+            }
+            k = j + (i % 2);
+            if (k < this._config.hexaGridWidth) {
+                chain = this.markBall(i - 1, k, id, chain);
+            }
+        }
+        if (i < this._config.hexaGridHeight) {
+            k = j - 1 + (i % 2);
+            if (k >= 0) {
+                chain = this.markBall(i + 1, k, id, chain);
+            }
+            k = j + (i % 2);
+            if (k < this._config.hexaGridWidth) {
+                chain = this.markBall(i + 1, k, id, chain);
+            }
+        }
+
+        return chain;
     }
 
     this.removeFloatingBalls = function () {
+        // Create tmp grid.
+        this._hexagridTmp = [];
+        for (var i = 0; i < this._config.hexaGridHeight; i++) {
+            this._hexagridTmp[i] = [];
+            for (var j = 0; j < this._config.hexaGridWidth; j++) {
+                this._hexagridTmp[i][j] = null;
+            }
+        }
+
+        //@TODO
     }
 });
 
