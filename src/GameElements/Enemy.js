@@ -97,4 +97,14 @@ function start_game_flow () {
  * Game tick.
  */
 function tick () {
+    this._enemyview.style.x += this._enemyDirection * this._config.enemySpeed * this._progress;
+
+    if (this._enemyview.style.x < 0) {
+        this._enemyview.style.x = -this._enemyview.style.x;
+        this._enemyDirection = -this._enemyDirection;
+    }
+    else if (this._enemyview.style.x + this._enemyview.style.width > this._config.screenWidth) {
+        this._enemyview.style.x -= this._enemyview.style.x + this._enemyview.style.width - this._config.screenWidth;
+        this._enemyDirection = -this._enemyDirection;
+    }
 }
