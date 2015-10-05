@@ -53,7 +53,7 @@ exports = Class(ui.View, function (supr) {
         this.on('game1:start', start_game_flow.bind(this));
 
         this.on('InputStart', function (event, point) {
-            if (!this._hexagrid.getGridState()) {
+            if (this.gameOver()) {
                 return;
             }
 
@@ -62,7 +62,7 @@ exports = Class(ui.View, function (supr) {
         });
 
         this.on('InputSelect', function (event, point) {
-            if (!this._hexagrid.getGridState()) {
+            if (this.gameOver()) {
                 return;
             }
 
@@ -71,7 +71,7 @@ exports = Class(ui.View, function (supr) {
         });
 
         this.on('InputMove', function (event, point) {
-            if (!this._hexagrid.getGridState()) {
+            if (this.gameOver()) {
                 return;
             }
 
@@ -90,6 +90,10 @@ exports = Class(ui.View, function (supr) {
         this._user.emit('user:start');
         this._enemy.emit('enemy:start');
         this._hexagrid.emit('hexagrid:start');
+    };
+
+    this.gameOver = function () {
+        return !this._hexagrid.getGridState();
     };
 });
 
@@ -112,7 +116,7 @@ function start_game_flow () {
  */
 function tick () {
     // Game over. The user lost.
-    if (!this._hexagrid.getGridState()) {
+    if (this.gameOver()) {
         this._enemy.gameOver();
 
         setTimeout(bind(this, function () {
