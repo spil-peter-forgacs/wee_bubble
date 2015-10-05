@@ -97,6 +97,7 @@ function start_game_flow () {
  * Game tick.
  */
 function tick () {
+    // Move enemy left and right.
     this._enemyview.style.x += this._enemyDirection * this._config.enemySpeed * this._progress;
 
     if (this._enemyview.style.x < 0) {
