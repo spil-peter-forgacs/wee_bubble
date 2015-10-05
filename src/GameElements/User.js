@@ -53,8 +53,23 @@ exports = Class(ui.View, function (supr) {
 
         this.on('user:tick', tick.bind(this));
 
+        // Is the second ball clicked to switch?
+        this.isBallClicked = function (point) {
+            var ball2x = (this._config.screenWidth / 2) - this._config.cannonSize;
+            var ball2y = this._config.screenHeight - this._config.ballSize;
+            return (point.x >= ball2x && point.x <= ball2x + this._config.ballSize &&
+                point.y >= ball2y && point.y <= ball2y + this._config.ballSize);
+        }
+
         // Rotation of cannon.
         this.inputDown = function (point) {
+
+            // Changing the ball?
+            if (this.isBallClicked(point)) {
+                return;
+            }
+
+
             var cannonCenterX = this._cannonview.style.x + (this._config.cannonSize / 2);
             var cannonCenterY = this._cannonview.style.y + (this._config.cannonSize / 2);
 
@@ -86,11 +101,7 @@ exports = Class(ui.View, function (supr) {
         this.inputUp = function (point) {
 
             // Changing the ball.
-            var ball2x = (this._config.screenWidth / 2) - this._config.cannonSize;
-            var ball2y = this._config.screenHeight - this._config.ballSize;
-            if (point.x >= ball2x && point.x <= ball2x + this._config.ballSize &&
-                point.y >= ball2y && point.y <= ball2y + this._config.ballSize) {
-
+            if (this.isBallClicked(point)) {
                 // Switch balls.
                 var ballTmp = this._ball1Id;
                 this._ball1Id = this._ball2Id;
