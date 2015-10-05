@@ -93,7 +93,20 @@ exports = Class(ui.View, function (supr) {
     };
 
     this.gameOver = function () {
-        return !this._hexagrid.getGridState();
+        var enemy = this._enemy.getEnemy();
+        var firedBall = this._user.getFiredBall();
+        var hitEnemy = false;
+
+        if (firedBall) {
+            var firedBallStyle = firedBall.view.style;
+            var enemyStyle = enemy.style;
+            hitEnemy = (firedBallStyle.x >= enemyStyle.x &&
+                        firedBallStyle.x <= enemyStyle.x + enemyStyle.width &&
+                        firedBallStyle.y >= 0 &&
+                        firedBallStyle.y <= enemyStyle.height);
+        }
+
+        return !this._hexagrid.getGridState() || hitEnemy;
     };
 });
 
@@ -117,7 +130,15 @@ function start_game_flow () {
 function tick () {
     // Game over. The user lost.
     if (this.gameOver()) {
-        this._enemy.gameOver();
+        // Does hexagrid reach the user?
+        if (!this._hexagrid.getGridState()) {
+            this._enemy.gameOverLose();
+        }
+        else {
+            this._enemy.gameOverWin();
+        }
+
+        this._user.resetFiredBallPosition();
 
         setTimeout(bind(this, function () {
             this.emit('gamescreen1:end');

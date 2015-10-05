@@ -54,7 +54,19 @@ exports = Class(ui.View, function (supr) {
         this._enemyview.style.height = this._config.enemySize;
     }
 
-    this.gameOver = function () {
+    this.getEnemy = function () {
+        return this._enemyview;
+    }
+
+    this.gameOverWin = function () {
+        this._animator.now({
+            x: this._config.screenWidth / 2,
+            width: 0,
+            height: 0
+        }, 1500, animate.easeIn);
+    }
+
+    this.gameOverLose = function () {
         this._animator.now({
             x: 0,
             width: this._config.screenWidth,

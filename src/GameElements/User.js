@@ -143,6 +143,7 @@ exports = Class(ui.View, function (supr) {
         this._isMoving = false;
         this._dx = 0;
         this._dy = 0;
+        this.resetFiredBallPosition()
 
         this._ball0Id = this.getBallId();
         this._ball1Id = this.getBallId();
@@ -198,7 +199,10 @@ exports = Class(ui.View, function (supr) {
 
 
         this._isMoving = false;
+        this.resetFiredBallPosition();
+    }
 
+    this.resetFiredBallPosition = function () {
         // Reset base position.
         this._ball0.style.x = this._ballBaseX;
         this._ball0.style.y = this._ballBaseY;
