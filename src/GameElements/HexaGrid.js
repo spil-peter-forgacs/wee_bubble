@@ -133,6 +133,35 @@ exports = Class(ui.View, function (supr) {
         var upRightI = null;
         var upRightJ = null;
 
+        // Up
+        if (i > 0) {
+            // Up left
+            k = j - 1 + (i % 2);
+            if (k >= 0) {
+                ballHit = (ballHit || this._hexagridId[i - 1][k] !== null);
+                if (this._hexagridId[i - 1][k] === null) {
+                    alternativeI = i - 1;
+                    alternativeJ = k;
+
+                    // Helping the ball.
+                    upLeftI = i - 1;
+                    upLeftJ = k;
+                }
+            }
+            // Up right
+            k = j + (i % 2);
+            if (k < this._config.hexaGridWidth) {
+                ballHit = (ballHit || this._hexagridId[i - 1][k] !== null);
+                if (this._hexagridId[i - 1][k] === null) {
+                    alternativeI = i - 1;
+                    alternativeJ = k;
+
+                    // Helping tha ball.
+                    upRightI = i - 1;
+                    upRightJ = k;
+                }
+            }
+        }
         // Down
         if (i < this._config.hexaGridHeight) {
             // Down left
@@ -168,35 +197,6 @@ exports = Class(ui.View, function (supr) {
             if (this._hexagridId[i][j + 1] === null) {
                 alternativeI = i;
                 alternativeJ = j + 1;
-            }
-        }
-        // Up
-        if (i > 0) {
-            // Up left
-            k = j - 1 + (i % 2);
-            if (k >= 0) {
-                ballHit = (ballHit || this._hexagridId[i - 1][k] !== null);
-                if (this._hexagridId[i - 1][k] === null) {
-                    alternativeI = i - 1;
-                    alternativeJ = k;
-
-                    // Helping the ball.
-                    upLeftI = i - 1;
-                    upLeftJ = k;
-                }
-            }
-            // Up right
-            k = j + (i % 2);
-            if (k < this._config.hexaGridWidth) {
-                ballHit = (ballHit || this._hexagridId[i - 1][k] !== null);
-                if (this._hexagridId[i - 1][k] === null) {
-                    alternativeI = i - 1;
-                    alternativeJ = k;
-
-                    // Helping tha ball.
-                    upRightI = i - 1;
-                    upRightJ = k;
-                }
             }
         }
 
