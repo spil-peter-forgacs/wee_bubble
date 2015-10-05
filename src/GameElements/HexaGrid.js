@@ -127,31 +127,9 @@ exports = Class(ui.View, function (supr) {
         var alternativeI = null;
         var alternativeJ = null;
 
-        if (j > 0) {
-            ballHit = (ballHit || this._hexagridId[i][j - 1] !== null);
-            if (this._hexagridId[i][j - 1] === null) {
-                alternativeI = i;
-                alternativeJ = j - 1;
-            }
-        }
-        if (j < this._config.hexaGridWidth - 1) {
-            ballHit = (ballHit || this._hexagridId[i][j + 1] !== null);
-            if (this._hexagridId[i][j + 1] === null) {
-                alternativeI = i;
-                alternativeJ = j + 1;
-            }
-        }
-        if (i > 0) {
-            k = j - 1 + (i % 2);
-            if (k >= 0) {
-                ballHit = (ballHit || this._hexagridId[i - 1][k] !== null);
-            }
-            k = j + (i % 2);
-            if (k < this._config.hexaGridWidth) {
-                ballHit = (ballHit || this._hexagridId[i - 1][k] !== null);
-            }
-        }
+        // Down
         if (i < this._config.hexaGridHeight) {
+            // Down left
             k = j - 1 + (i % 2);
             if (k >= 0) {
                 ballHit = (ballHit || this._hexagridId[i + 1][k] !== null);
@@ -160,11 +138,49 @@ exports = Class(ui.View, function (supr) {
                     alternativeJ = k;
                 }
             }
+            // Down right
             k = j + (i % 2);
             if (k < this._config.hexaGridWidth) {
                 ballHit = (ballHit || this._hexagridId[i + 1][k] !== null);
                 if (this._hexagridId[i + 1][k] === null) {
                     alternativeI = i + 1;
+                    alternativeJ = k;
+                }
+            }
+        }
+        // Left
+        if (j > 0) {
+            ballHit = (ballHit || this._hexagridId[i][j - 1] !== null);
+            if (this._hexagridId[i][j - 1] === null) {
+                alternativeI = i;
+                alternativeJ = j - 1;
+            }
+        }
+        // Right
+        if (j < this._config.hexaGridWidth - 1) {
+            ballHit = (ballHit || this._hexagridId[i][j + 1] !== null);
+            if (this._hexagridId[i][j + 1] === null) {
+                alternativeI = i;
+                alternativeJ = j + 1;
+            }
+        }
+        // Up
+        if (i > 0) {
+            // Up left
+            k = j - 1 + (i % 2);
+            if (k >= 0) {
+                ballHit = (ballHit || this._hexagridId[i - 1][k] !== null);
+                if (this._hexagridId[i - 1][k] === null) {
+                    alternativeI = i - 1;
+                    alternativeJ = k;
+                }
+            }
+            // Up right
+            k = j + (i % 2);
+            if (k < this._config.hexaGridWidth) {
+                ballHit = (ballHit || this._hexagridId[i - 1][k] !== null);
+                if (this._hexagridId[i - 1][k] === null) {
+                    alternativeI = i - 1;
                     alternativeJ = k;
                 }
             }
@@ -188,6 +204,9 @@ exports = Class(ui.View, function (supr) {
         return ballHit;
     }
 
+    /**
+     * Attach the ball in case of hit.
+     */
     this.attachBall = function (firedBall, i, j) {
         // Attach.
         this._hexagridId[i][j] = firedBall.model;
@@ -196,6 +215,9 @@ exports = Class(ui.View, function (supr) {
         this.removeBalls(i, j);
     }
 
+    /**
+     * Remove balls with the same color.
+     */
     this.removeBalls = function (posI, posJ) {
         // Create tmp grid.
         this._hexagridTmp = [];
@@ -206,6 +228,7 @@ exports = Class(ui.View, function (supr) {
             }
         }
 
+        // Check the chain of ball in same color.
         var chain = 0;
         var id = this._hexagridId[posI][posJ];
         chain = this.markBall(posI, posJ, id, chain);
@@ -227,8 +250,20 @@ exports = Class(ui.View, function (supr) {
         this.removeFloatingBalls();
     }
 
+    /**
+     * Helper recursive function for checking the hexagrid.
+     *
+     * @param int i
+     * @param int j
+     * @param int id
+     *     ID of the ball, or null in case of empty ball space check
+     * @param int chain
+     *     The chain detected
+     *
+     * @return int chain
+     */
     this.markBall = function (i, j, id, chain) {
-        // It is already marked?
+        // It is already marked? Then it is done.
         if (this._hexagridTmp[i][j]) {
             return chain;
         }
@@ -242,7 +277,7 @@ exports = Class(ui.View, function (supr) {
             return chain;
         }
 
-        // Mark it.
+        // Mark it. Don't reprocede again.
         this._hexagridTmp[i][j] = true;
         chain++;
 
@@ -252,27 +287,35 @@ exports = Class(ui.View, function (supr) {
         // Helper variable.
         var k;
 
+        // Left
         if (j > 0) {
             chain = this.markBall(i, j - 1, id, chain);
         }
+        // Right
         if (j < this._config.hexaGridWidth - 1) {
             chain = this.markBall(i, j + 1, id, chain);
         }
+        // Up
         if (i > 0) {
+            // Up left
             k = j - 1 + (i % 2);
             if (k >= 0) {
                 chain = this.markBall(i - 1, k, id, chain);
             }
+            // Up right
             k = j + (i % 2);
             if (k < this._config.hexaGridWidth) {
                 chain = this.markBall(i - 1, k, id, chain);
             }
         }
+        // Down
         if (i < this._config.hexaGridHeight) {
+            // Down left
             k = j - 1 + (i % 2);
             if (k >= 0) {
                 chain = this.markBall(i + 1, k, id, chain);
             }
+            // Down right
             k = j + (i % 2);
             if (k < this._config.hexaGridWidth) {
                 chain = this.markBall(i + 1, k, id, chain);
@@ -282,6 +325,9 @@ exports = Class(ui.View, function (supr) {
         return chain;
     }
 
+    /**
+     * Function for removing the floating balls, if there is any.
+     */
     this.removeFloatingBalls = function () {
         // Create tmp grid.
         this._hexagridTmp = [];
@@ -293,6 +339,8 @@ exports = Class(ui.View, function (supr) {
         }
 
 
+        // Checking.
+        // We don't use chain here, but later we can for scoring.
         var chain = 0;
         var id = null;
         for (var j = 0; j < this._config.hexaGridWidth; j++) {
@@ -347,7 +395,7 @@ function start_game_flow () {
  * Game tick.
  */
 function tick () {
-    // Check lowest ball.
+    // Check lowest ball for game over.
     var lowestBall = 0;
     for (var i = 0; i < this._config.hexaGridHeight; i++) {
         for (var j = 0; j < this._config.hexaGridWidth; j++) {
@@ -373,7 +421,7 @@ function tick () {
     }
 
 
-    // Create new lines.
+    // Create new bubble lines.
     this.style.y -= 2 * this._config.ballSize;
 
     for (var i = this._config.hexaGridHeight - 1; i >= 0 ; i--) {

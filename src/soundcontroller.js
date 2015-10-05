@@ -1,3 +1,7 @@
+/**
+ * Sound controller.
+ */
+
 import AudioManager;
 
 exports.sound = null;

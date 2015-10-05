@@ -68,7 +68,7 @@ exports = Class(ui.View, function (supr) {
             }
 
             // Safety element.
-            // We want to allow user shoot to reverse direction.
+            // We don't want to allow user shoot to reverse direction.
             var maxRotation = 3 * Math.PI / 8;
             if (rotation > maxRotation && rotation < Math.PI) {
                 rotation = maxRotation;
@@ -145,7 +145,10 @@ exports = Class(ui.View, function (supr) {
 
         return {
             "model": this._ball0Id,
-            "view": this._ball0
+            "view": this._ball0,
+            "dx": this._dx,
+            "dy": this._dy,
+            "isMoving": this._isMoving
         };
     }
 

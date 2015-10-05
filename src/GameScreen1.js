@@ -98,7 +98,7 @@ exports = Class(ui.View, function (supr) {
  */
 function start_game_flow () {
 
-    // Sub setup
+    // Reset game.
     this._user.resetGame();
     this._enemy.resetGame();
     this._hexagrid.resetGame();
