@@ -127,6 +127,12 @@ exports = Class(ui.View, function (supr) {
         var alternativeI = null;
         var alternativeJ = null;
 
+        // Helping the ball go up, if there was empty space.
+        var upLeftI = null;
+        var upLeftJ = null;
+        var upRightI = null;
+        var upRightJ = null;
+
         // Down
         if (i < this._config.hexaGridHeight) {
             // Down left
@@ -173,6 +179,10 @@ exports = Class(ui.View, function (supr) {
                 if (this._hexagridId[i - 1][k] === null) {
                     alternativeI = i - 1;
                     alternativeJ = k;
+
+                    // Helping the ball.
+                    upLeftI = i - 1;
+                    upLeftJ = k;
                 }
             }
             // Up right
@@ -182,12 +192,30 @@ exports = Class(ui.View, function (supr) {
                 if (this._hexagridId[i - 1][k] === null) {
                     alternativeI = i - 1;
                     alternativeJ = k;
+
+                    // Helping tha ball.
+                    upRightI = i - 1;
+                    upRightJ = k;
                 }
             }
         }
 
+
+        // If the ball place empty, and also to up in the ball direction, it can go.
+        if (this._hexagridId[i][j] === null) {
+            // Ball goes to left and it is empty.
+            if (firedBall.dx <= 0 && upLeftI !== null && upLeftJ !== null) {
+                return;
+            }
+            // Ball goes to right and it is empty.
+            else if (firedBall.dx >= 0 && upRightI !== null && upRightJ !== null) {
+                return;
+            }
+        }
+
+
         // If the calculated place occupied, choose the alternative empty one.
-        if (this._hexagridId[i][j] !== null && alternativeI && alternativeJ) {
+        if (this._hexagridId[i][j] !== null && alternativeI !== null && alternativeJ !== null) {
             ballHit = true;
             i = alternativeI;
             j = alternativeJ;
