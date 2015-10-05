@@ -82,8 +82,28 @@ exports = Class(ui.View, function (supr) {
             return rotation;
         }
 
-        // Firing cannon.
+        // Firing cannon or changing the ball.
         this.inputUp = function (point) {
+
+            // Changing the ball.
+            var ball2x = (this._config.screenWidth / 2) - this._config.cannonSize;
+            var ball2y = this._config.screenHeight - this._config.ballSize;
+            if (point.x >= ball2x && point.x <= ball2x + this._config.ballSize &&
+                point.y >= ball2y && point.y <= ball2y + this._config.ballSize) {
+
+                // Switch balls.
+                var ballTmp = this._ball1Id;
+                this._ball1Id = this._ball2Id;
+                this._ball2Id = ballTmp;
+
+                this._ball1.setImage( this.getBallSrc( this._ball1Id ) );
+                this._ball2.setImage( this.getBallSrc( this._ball2Id ) );
+
+                return;
+            }
+
+
+            // Firing cannon.
             var rotation = this.inputDown(point);
 
             if (this._isMoving) {
